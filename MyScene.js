@@ -20,7 +20,7 @@ class MyScene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.setUpdatePeriod(50);
-        
+
         this.enableTextures(true);
 
         this.earthTex = new CGFappearance(this);
@@ -34,7 +34,7 @@ class MyScene extends CGFscene {
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.incompleteSphere = new MySphere(this, 16, 8);
-        this.cylinder = new MyCylinder(this,100);
+        this.cylinder = new MyCylinder(this, 100);
         this.cube = new MyUnitCube(this);
         this.vehicle = new MyVehicle(this);
 
@@ -44,7 +44,9 @@ class MyScene extends CGFscene {
         this.displaySphere = false;
         this.displayCube = false;
         this.displayVehicle = true;
-        }
+        this.speedFactor = 0.1;
+        this.vehicleScale = 1;
+    }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -61,7 +63,8 @@ class MyScene extends CGFscene {
         this.setShininess(10.0);
     }
     // called periodically (as per setUpdatePeriod() in init())
-    update(t){
+    update(t) {
+        this.checkKeys();
         //To be done...
     }
 
@@ -75,7 +78,7 @@ class MyScene extends CGFscene {
         this.loadIdentity();
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
-        
+
         // Draw axis
         if (this.displayAxis)
             this.axis.display();
@@ -86,27 +89,74 @@ class MyScene extends CGFscene {
         // ---- BEGIN Primitive drawing section
 
         //This sphere does not have defined texture coordinates
-        if(this.displaySphere){
+        if (this.displaySphere) {
             this.earthTex.apply();
             this.incompleteSphere.display();
         }
-        
-        if(this.displayCylinder){
+
+        if (this.displayCylinder) {
             this.setDefaultAppearance();
             this.cylinder.display();
         }
 
-        if(this.displayCube){
-            this.setDefaultAppearance();
-            this.scale(50,50,50);
-            this.cube.display();
-        }
-
-        if(this.displayVehicle){
+        if (this.displayVehicle) {
+            this.pushMatrix();
+            this.scale(this.vehicleScale,this.vehicleScale,this.vehicleScale);
             this.setDefaultAppearance();
             this.vehicle.display();
+            this.popMatrix();
+        }
+
+        if (this.displayCube) {
+            this.pushMatrix();
+            this.setDefaultAppearance();
+            this.scale(50, 50, 50);
+            this.cube.display();
+            this.popMatrix();
         }
 
         // ---- END Primitive drawing section
+    }
+
+    checkKeys() {
+        var text = "Keys pressed: ";
+        var keysPressed = false;
+        // Check for key codes e.g. in https://keycode.info/
+        if (this.gui.isKeyPressed("KeyW")) {
+            if(this.vehicle.velocity < 0){
+                this.vehicle.velocity = 0.05;
+            }
+            text += " W ";
+            this.vehicle.accelerate(this.speedFactor);
+            keysPressed = true;
+        }
+        if (this.gui.isKeyPressed("KeyS")) {
+            if(this.vehicle.velocity > 0){
+                this.vehicle.velocity = -0.05;
+            }
+            text += " S ";
+            this.vehicle.accelerate(-this.speedFactor);
+            keysPressed = true;
+        }
+        if (this.gui.isKeyPressed("KeyA")) {
+            text += " A ";
+            this.vehicle.turn(Math.PI/10);
+            keysPressed = true;
+        }
+        if (this.gui.isKeyPressed("KeyD")) {
+            text += " D ";
+            this.vehicle.turn(-Math.PI/10);
+            keysPressed = true;
+        }
+        if (this.gui.isKeyPressed("KeyR")) {
+            text += " R ";
+            this.vehicle.reset();
+            keysPressed = true;
+        }
+        if (keysPressed){
+            console.log(text);
+            this.vehicle.update();
+            console.log(this.vehicle.velocity);
+        }
     }
 }
