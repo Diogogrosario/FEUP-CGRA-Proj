@@ -19,36 +19,43 @@ class MyUnitCube extends CGFobject {
         this.backFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.backFace.setShininess(10.0);
 		this.backFace.loadTexture('images/split_cubemap/back.png');
+		this.backFace.setTextureWrap("REPEAT", "REPEAT");
+
 		
 		this.frontFace = new CGFappearance(this.scene);
         this.frontFace.setDiffuse(0.9, 0.9, 0.9, 1);
         this.frontFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.frontFace.setShininess(10.0);
 		this.frontFace.loadTexture('images/split_cubemap/front.png');
+		this.backFace.setTextureWrap("REPEAT", "REPEAT");
 		
 		this.leftFace = new CGFappearance(this.scene);
         this.leftFace.setDiffuse(0.9, 0.9, 0.9, 1);
         this.leftFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.leftFace.setShininess(10.0);
 		this.leftFace.loadTexture('images/split_cubemap/left.png');
+		this.backFace.setTextureWrap("REPEAT", "REPEAT");
 		
 		this.rightFace = new CGFappearance(this.scene);
         this.rightFace.setDiffuse(0.9, 0.9, 0.9, 1);
         this.rightFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.rightFace.setShininess(10.0);
-        this.rightFace.loadTexture('images/split_cubemap/right.png');
+		this.rightFace.loadTexture('images/split_cubemap/right.png');
+		this.backFace.setTextureWrap("REPEAT", "REPEAT");
 
         this.bottomFace = new CGFappearance(this.scene);
         this.bottomFace.setDiffuse(0.9, 0.9, 0.9, 1);
         this.bottomFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.bottomFace.setShininess(10.0);
-        this.bottomFace.loadTexture('images/split_cubemap/bottom.png');
+		this.bottomFace.loadTexture('images/split_cubemap/bottom.png');
+		this.backFace.setTextureWrap("REPEAT", "REPEAT");
 
         this.topFace = new CGFappearance(this.scene);
         this.topFace.setDiffuse(0.9, 0.9, 0.9, 1);
         this.topFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.topFace.setShininess(10.0);
-        this.topFace.loadTexture('images/split_cubemap/top.png');
+		this.topFace.loadTexture('images/split_cubemap/top.png');
+		this.backFace.setTextureWrap("REPEAT", "REPEAT");
 		
 
 	}
