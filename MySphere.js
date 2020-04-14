@@ -41,18 +41,20 @@ class MySphere extends CGFobject {
         //--- Vertices coordinates
         var x = Math.cos(theta) * sinPhi;
         var y = cosPhi;
-        var z = Math.sin(theta) * sinPhi;
+        var z = Math.sin(-theta) * sinPhi;
         this.vertices.push(x, y, z);
+          
 
         //--- Indices
-        if (latitude < this.latDivs || longitude < this.longDivs) {
-          var first = latitude * latVertices + longitude;
-          var second = first + latVertices;
-          // pushing two triangles using indices from this round (first, first+1)
-          // and the ones directly south (second, second+1)
+        if (latitude < this.latDivs && longitude < this.longDivs) {
+          var current = latitude * latVertices + longitude;
+          var next = current + latVertices;
+          // pushing two triangles using indices from this round (current, current+1)
+          // and the ones directly south (next, next+1)
           // (i.e. one full round of slices ahead)
-          this.indices.push(first,  first + 1, second);
-          this.indices.push( first + 1, second +1 , second);
+          
+          this.indices.push( current + 1, current, next);
+          this.indices.push( current + 1, next, next +1);
         }
 
         //--- Normals
@@ -65,7 +67,7 @@ class MySphere extends CGFobject {
 
         //--- Texture Coordinates
         // To be done... 
-        // May need some additional code also in the beginning of the function.
+        this.texCoords.push(longitude/this.longDivs,latitude/this.latDivs);
         
       }
       phi += phiInc;

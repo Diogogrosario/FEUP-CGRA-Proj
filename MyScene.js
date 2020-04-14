@@ -23,14 +23,28 @@ class MyScene extends CGFscene {
         
         this.enableTextures(true);
 
+        this.earthTex = new CGFappearance(this);
+        this.earthTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.earthTex.setDiffuse(0.9, 0.9, 0.9, 1);
+        this.earthTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.earthTex.setShininess(10.0);
+        this.earthTex.loadTexture('images/earth.jpg');
+        this.earthTex.setTextureWrap('REPEAT', 'REPEAT');
+
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.incompleteSphere = new MySphere(this, 16, 8);
         this.cylinder = new MyCylinder(this,100);
+        this.cube = new MyUnitCube(this);
+        this.vehicle = new MyVehicle(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
-    }
+        this.displayCylinder = false;
+        this.displaySphere = false;
+        this.displayCube = false;
+        this.displayVehicle = true;
+        }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -72,8 +86,26 @@ class MyScene extends CGFscene {
         // ---- BEGIN Primitive drawing section
 
         //This sphere does not have defined texture coordinates
-        this.incompleteSphere.display();
-        this.cylinder.display();
+        if(this.displaySphere){
+            this.earthTex.apply();
+            this.incompleteSphere.display();
+        }
+        
+        if(this.displayCylinder){
+            this.setDefaultAppearance();
+            this.cylinder.display();
+        }
+
+        if(this.displayCube){
+            this.setDefaultAppearance();
+            this.scale(50,50,50);
+            this.cube.display();
+        }
+
+        if(this.displayVehicle){
+            this.setDefaultAppearance();
+            this.vehicle.display();
+        }
 
         // ---- END Primitive drawing section
     }
