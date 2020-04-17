@@ -15,7 +15,8 @@ class MyUnitCube extends CGFobject {
 		this.quad = new MyQuad(this.scene);
 		
 		this.backFace = new CGFappearance(this.scene);
-        this.backFace.setDiffuse(0.9, 0.9, 0.9, 1);
+		this.backFace.setAmbient(1,1,1,1);
+        this.backFace.setDiffuse(0.5, 0.5, 0.5, 1);
         this.backFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.backFace.setShininess(10.0);
 		this.backFace.loadTexture('images/split_cubemap/back.png');
@@ -23,39 +24,44 @@ class MyUnitCube extends CGFobject {
 
 		
 		this.frontFace = new CGFappearance(this.scene);
-        this.frontFace.setDiffuse(0.9, 0.9, 0.9, 1);
+		this.frontFace.setAmbient(1,1,1,1);
+        this.frontFace.setDiffuse(0.5, 0.5, 0.5, 1);
         this.frontFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.frontFace.setShininess(10.0);
 		this.frontFace.loadTexture('images/split_cubemap/front.png');
-		this.backFace.setTextureWrap("REPEAT", "REPEAT");
+		this.frontFace.setTextureWrap("REPEAT", "REPEAT");
 		
 		this.leftFace = new CGFappearance(this.scene);
-        this.leftFace.setDiffuse(0.9, 0.9, 0.9, 1);
+		this.leftFace.setAmbient(1,1,1,1);
+        this.leftFace.setDiffuse(0.5, 0.5, 0.5, 1);
         this.leftFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.leftFace.setShininess(10.0);
 		this.leftFace.loadTexture('images/split_cubemap/left.png');
-		this.backFace.setTextureWrap("REPEAT", "REPEAT");
+		this.leftFace.setTextureWrap("REPEAT", "REPEAT");
 		
 		this.rightFace = new CGFappearance(this.scene);
-        this.rightFace.setDiffuse(0.9, 0.9, 0.9, 1);
+		this.rightFace.setAmbient(1,1,1,1);
+        this.rightFace.setDiffuse(0.5, 0.5, 0.5, 1);
         this.rightFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.rightFace.setShininess(10.0);
 		this.rightFace.loadTexture('images/split_cubemap/right.png');
-		this.backFace.setTextureWrap("REPEAT", "REPEAT");
+		this.rightFace.setTextureWrap("REPEAT", "REPEAT");
 
-        this.bottomFace = new CGFappearance(this.scene);
-        this.bottomFace.setDiffuse(0.9, 0.9, 0.9, 1);
+		this.bottomFace = new CGFappearance(this.scene);
+		this.bottomFace.setAmbient(1,1,1,1);
+        this.bottomFace.setDiffuse(0.5, 0.5, 0.5, 1);
         this.bottomFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.bottomFace.setShininess(10.0);
 		this.bottomFace.loadTexture('images/split_cubemap/bottom.png');
-		this.backFace.setTextureWrap("REPEAT", "REPEAT");
+		this.bottomFace.setTextureWrap("REPEAT", "REPEAT");
 
-        this.topFace = new CGFappearance(this.scene);
-        this.topFace.setDiffuse(0.9, 0.9, 0.9, 1);
+		this.topFace = new CGFappearance(this.scene);
+		this.topFace.setAmbient(1,1,1,1);
+        this.topFace.setDiffuse(0.5, 0.5, 0.5, 1);
         this.topFace.setSpecular(0.1, 0.1, 0.1, 1);
         this.topFace.setShininess(10.0);
 		this.topFace.loadTexture('images/split_cubemap/top.png');
-		this.backFace.setTextureWrap("REPEAT", "REPEAT");
+		this.topFace.setTextureWrap("REPEAT", "REPEAT");
 		
 
 	}
