@@ -15,7 +15,9 @@ class MyVehicle extends CGFobject {
 	}
 	
 	initBuffers() {
-        this.pyramid = new MyPyramid(this.scene,4,1);
+        this.helix = new MyHelix(this.scene)
+        this.sphere = new MySphere(this.scene,16,8);
+        this.leme = new MyLeme(this.scene);
     }
     
     display(){
@@ -24,10 +26,28 @@ class MyVehicle extends CGFobject {
         this.scene.translate(this.x,this.y,this.z);
         this.scene.rotate(this.angle,0,1,0);
 
-        // Original pos
-        this.scene.translate(0,0,0);
-        this.scene.rotate(Math.PI/2,1,0,0);
-        this.pyramid.display();
+        //Corpo do dirigível
+        
+        this.scene.pushMatrix();
+        this.scene.scale(1,1,2);
+        this.sphere.display();
+        this.scene.popMatrix();
+
+        
+        //Hélice
+        this.scene.pushMatrix(); /// START HELICE TRANSFORM
+        this.scene.translate(0,-1.08,-0.35);
+
+        this.helix.display();
+
+        this.scene.popMatrix(); ///// FINISH HELICE TRANSFORM
+
+        //LEMES
+        //this.leme.display()
+        
+
+
+
         this.scene.popMatrix();
     }
 
@@ -37,6 +57,7 @@ class MyVehicle extends CGFobject {
         this.x = 0;
         this.y = 0;
         this.z = 0; 
+        this.helix.update(0);
     }
 
     turn(value){
@@ -45,11 +66,13 @@ class MyVehicle extends CGFobject {
 
     accelerate(value){
         this.velocity += value;
+        this.helix.update(this.velocity,1);
     }
 
     update(){
         this.x += this.velocity * Math.sin(this.angle);
         this.z += this.velocity * Math.cos(this.angle);
+        this.helix.update(this.velocity,0); 
     }
 }
 

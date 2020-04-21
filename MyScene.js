@@ -50,6 +50,7 @@ class MyScene extends CGFscene {
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
+        this.lights[0].setAmbient(0.25,0.25,0.25,1.0);
         this.lights[0].enable();
         this.lights[0].update();
     }
@@ -123,7 +124,7 @@ class MyScene extends CGFscene {
         var keysPressed = false;
         // Check for key codes e.g. in https://keycode.info/
         if (this.gui.isKeyPressed("KeyW")) {
-            if(this.vehicle.velocity < 0){
+            if(this.vehicle.velocity <= 0){
                 this.vehicle.velocity = 0.05;
             }
             text += " W ";
@@ -131,11 +132,12 @@ class MyScene extends CGFscene {
             keysPressed = true;
         }
         if (this.gui.isKeyPressed("KeyS")) {
-            if(this.vehicle.velocity > 0){
-                this.vehicle.velocity = -0.05;
-            }
             text += " S ";
-            this.vehicle.accelerate(-this.speedFactor);
+            if(this.vehicle.velocity>0)
+                this.vehicle.accelerate(-this.speedFactor);
+            if(this.vehicle.velocity < 0){
+                this.vehicle.velocity = 0;
+            }
             keysPressed = true;
         }
         if (this.gui.isKeyPressed("KeyA")) {
@@ -155,8 +157,7 @@ class MyScene extends CGFscene {
         }
         if (keysPressed){
             console.log(text);
-            this.vehicle.update();
-            console.log(this.vehicle.velocity);
         }
+        this.vehicle.update();
     }
 }
