@@ -144,11 +144,13 @@ class MyScene extends CGFscene {
         if (this.gui.isKeyPressed("KeyA")) {
             text += " A ";
             this.vehicle.turn(Math.PI/10);
+            this.vehicle.turnHelix(1);
             keysPressed = true;
         }
         if (this.gui.isKeyPressed("KeyD")) {
             text += " D ";
             this.vehicle.turn(-Math.PI/10);
+            this.vehicle.turnHelix(2);
             keysPressed = true;
         }
         if (this.gui.isKeyPressed("KeyR")) {
@@ -158,6 +160,9 @@ class MyScene extends CGFscene {
         }
         if (keysPressed){
             console.log(text);
+        }
+        else{
+            this.vehicle.turnHelix(0);
         }
         this.vehicle.update();
     }

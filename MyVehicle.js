@@ -8,6 +8,7 @@ class MyVehicle extends CGFobject {
         super(scene);
         this.angle = 0;
         this.velocity = 0;
+        this.lemeRotate = 0;
         this.x = 0;
         this.y = 0;
         this.z = 0;
@@ -37,10 +38,12 @@ class MyVehicle extends CGFobject {
         //Hélice
         this.scene.pushMatrix(); /// START HELICE TRANSFORM
         this.scene.translate(0,-1.08,-0.35);
-
         this.helix.display();
-
         this.scene.popMatrix(); ///// FINISH HELICE TRANSFORM
+
+        this.scene.pushMatrix();
+        
+        this.scene.rotate(this.lemeRotate,0,1,0);
 
         //LEME CIMA
         this.scene.pushMatrix();
@@ -57,6 +60,8 @@ class MyVehicle extends CGFobject {
         this.scene.rotate(Math.PI,0,0,1);
         this.scene.rotate(-Math.PI/2,0,1,0);
         this.leme.display()
+        this.scene.popMatrix();
+
         this.scene.popMatrix();
 
         //LEME LADO DIREITO
@@ -87,6 +92,7 @@ class MyVehicle extends CGFobject {
     reset(){
         this.angle = 0;
         this.velocity = 0;
+        this.lemeRotate = 0;
         this.x = 0;
         this.y = 0;
         this.z = 0; 
@@ -100,6 +106,16 @@ class MyVehicle extends CGFobject {
     accelerate(value){
         this.velocity += value;
         this.helix.update(this.velocity,1);
+    }
+
+    turnHelix(direction){
+        if(direction == 1){
+            this.lemeRotate = -Math.PI/10;
+        }
+        else if(direction == 2)
+            this.lemeRotate = Math.PI/10;
+        else
+            this.lemeRotate = 0;
     }
 
     update(){
