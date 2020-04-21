@@ -103,6 +103,7 @@ class MyScene extends CGFscene {
         if (this.displayVehicle) {
             this.pushMatrix();
             this.scale(this.vehicleScale,this.vehicleScale,this.vehicleScale);
+            //this.translate(0,10,0);
             this.setDefaultAppearance();
             this.vehicle.display();
             this.popMatrix();

@@ -42,8 +42,41 @@ class MyVehicle extends CGFobject {
 
         this.scene.popMatrix(); ///// FINISH HELICE TRANSFORM
 
-        //LEMES
-        //this.leme.display()
+        //LEME CIMA
+        this.scene.pushMatrix();
+        this.scene.scale(0.4,0.4,0.4);
+        this.scene.translate(0,1.5,-2.5);
+        this.scene.rotate(-Math.PI/2,0,1,0);
+        this.leme.display()
+        this.scene.popMatrix();
+
+        //LEME BAIXO
+        this.scene.pushMatrix();
+        this.scene.scale(0.4,0.4,0.4);
+        this.scene.translate(0,-1.6,-2.5);
+        this.scene.rotate(Math.PI,0,0,1);
+        this.scene.rotate(-Math.PI/2,0,1,0);
+        this.leme.display()
+        this.scene.popMatrix();
+
+        //LEME LADO DIREITO
+        this.scene.pushMatrix();
+        this.scene.scale(0.4,0.4,0.4);
+        this.scene.translate(-2,0,-2);
+        this.scene.rotate(-Math.PI/2,0,1,0);
+        this.scene.rotate(Math.PI/2,1,0,0);
+        this.leme.display()
+        this.scene.popMatrix();
+
+        //LEME LADO ESQUERDO
+        this.scene.pushMatrix();
+        this.scene.scale(0.4,0.4,0.4);
+        this.scene.translate(2,0,-2);
+        this.scene.rotate(Math.PI,0,0,1);
+        this.scene.rotate(-Math.PI/2,0,1,0);
+        this.scene.rotate(Math.PI/2,1,0,0);
+        this.leme.display()
+        this.scene.popMatrix();
         
 
 
