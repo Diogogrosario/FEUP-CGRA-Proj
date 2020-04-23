@@ -50,7 +50,7 @@ class MyScene extends CGFscene {
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-        this.lights[0].setAmbient(0.25,0.25,0.25,1.0);
+        this.lights[0].setAmbient(0.25, 0.25, 0.25, 1.0);
         this.lights[0].enable();
         this.lights[0].update();
     }
@@ -102,7 +102,7 @@ class MyScene extends CGFscene {
 
         if (this.displayVehicle) {
             this.pushMatrix();
-            this.scale(this.vehicleScale,this.vehicleScale,this.vehicleScale);
+            this.scale(this.vehicleScale, this.vehicleScale, this.vehicleScale);
             //this.translate(0,10,0);
             this.setDefaultAppearance();
             this.vehicle.display();
@@ -123,46 +123,69 @@ class MyScene extends CGFscene {
     checkKeys() {
         var text = "Keys pressed: ";
         var keysPressed = false;
-        // Check for key codes e.g. in https://keycode.info/
-        if (this.gui.isKeyPressed("KeyW")) {
-            if(this.vehicle.velocity <= 0){
-                this.vehicle.velocity = 0.05;
+        if (this.vehicle.autoPilot == false) {
+            // Check for key codes e.g. in https://keycode.info/
+            if (this.gui.isKeyPressed("KeyW")) {
+                if (this.vehicle.velocity <= 0) {
+                    this.vehicle.velocity = 0.05;
+                }
+                text += " W ";
+                this.vehicle.accelerate(this.speedFactor);
+                keysPressed = true;
             }
-            text += " W ";
-            this.vehicle.accelerate(this.speedFactor);
-            keysPressed = true;
-        }
-        if (this.gui.isKeyPressed("KeyS")) {
-            text += " S ";
-            if(this.vehicle.velocity>0)
-                this.vehicle.accelerate(-this.speedFactor);
-            if(this.vehicle.velocity < 0){
-                this.vehicle.velocity = 0;
+            if (this.gui.isKeyPressed("KeyS")) {
+                text += " S ";
+                if (this.vehicle.velocity > 0)
+                    this.vehicle.accelerate(-this.speedFactor);
+                if (this.vehicle.velocity < 0) {
+                    this.vehicle.velocity = 0;
+                }
+                keysPressed = true;
             }
-            keysPressed = true;
+            if (this.gui.isKeyPressed("KeyA")) {
+                text += " A ";
+                this.vehicle.turn(Math.PI / 10);
+                this.vehicle.turnHelix(1);
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyD")) {
+                text += " D ";
+                this.vehicle.turn(-Math.PI / 10);
+                this.vehicle.turnHelix(2);
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyR")) {
+                text += " R ";
+                this.vehicle.reset();
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyP")) {
+                text += " P ";
+                this.vehicle.autoPilot = true;
+                keysPressed = true;
+            }
+            if (keysPressed) {
+                console.log(text);
+            }
+            else {
+                this.vehicle.turnHelix(0);
+            }
         }
-        if (this.gui.isKeyPressed("KeyA")) {
-            text += " A ";
-            this.vehicle.turn(Math.PI/10);
-            this.vehicle.turnHelix(1);
-            keysPressed = true;
-        }
-        if (this.gui.isKeyPressed("KeyD")) {
-            text += " D ";
-            this.vehicle.turn(-Math.PI/10);
-            this.vehicle.turnHelix(2);
-            keysPressed = true;
-        }
-        if (this.gui.isKeyPressed("KeyR")) {
-            text += " R ";
-            this.vehicle.reset();
-            keysPressed = true;
-        }
-        if (keysPressed){
-            console.log(text);
-        }
-        else{
-            this.vehicle.turnHelix(0);
+        else {
+            if (this.gui.isKeyPressed("KeyP")) {
+                text += " P ";
+                this.vehicle.autoPilot = false;
+                keysPressed = true;
+            }
+            if (this.gui.isKeyPressed("KeyR")) {
+                text += " R ";
+                this.vehicle.reset();
+                keysPressed = true;
+            }
+            if (keysPressed) {
+                console.log(text);
+            }
+            
         }
         this.vehicle.update();
     }

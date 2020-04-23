@@ -12,6 +12,7 @@ class MyVehicle extends CGFobject {
         this.x = 0;
         this.y = 0;
         this.z = 0;
+        this.autoPilot = false;
 		this.initBuffers();
 	}
 	
@@ -96,6 +97,7 @@ class MyVehicle extends CGFobject {
         this.x = 0;
         this.y = 0;
         this.z = 0; 
+        this.autoPilot = false;
         this.helix.update(0);
     }
 
@@ -119,9 +121,19 @@ class MyVehicle extends CGFobject {
     }
 
     update(){
-        this.x += this.velocity * Math.sin(this.angle);
-        this.z += this.velocity * Math.cos(this.angle);
+        if(this.autoPilot == false){
+            this.x += this.velocity * Math.sin(this.angle);
+            this.z += this.velocity * Math.cos(this.angle);
+        }
+        else{
+            this.turn(Math.PI/50);
+            this.x +=  Math.PI/10 * Math.sin(this.angle);
+            this.z +=  Math.PI/10 * Math.cos(this.angle);
+
+        }
         this.helix.update(this.velocity,0); 
     }
+
+    
 }
 
