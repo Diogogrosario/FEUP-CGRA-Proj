@@ -10,7 +10,7 @@ class MyScene extends CGFscene {
         super.init(application);
         this.initCameras();
         this.initLights();
-        
+
         this.mySkybox = new CGFtexture(this, 'images/mySkybox.png');
 
         //Background color
@@ -46,13 +46,13 @@ class MyScene extends CGFscene {
         this.displayAxis = true;
         this.displayCylinder = false;
         this.displaySphere = false;
-        this.displayCube = true;
+        this.displayCube = false;
         this.displayVehicle = true;
         this.speedFactor = 0.1;
         this.vehicleScale = 1;
-        this.selectedTexture = 0;  
-        this.textures = [this.mySkybox,this.cubemap];
-        this.textureIds = { 'Custom Skybox': 0, 'Cubemap': 1};
+        this.selectedTexture = -1;
+        this.textures = [this.mySkybox, this.cubemap];
+        this.textureIds = { 'Custom Skybox': 0, 'Cubemap': 1 };
         this.updateAppliedTexture();
     }
     initLights() {
@@ -78,7 +78,8 @@ class MyScene extends CGFscene {
     }
 
     updateAppliedTexture() {
-        this.earthTex.setTexture(this.textures[this.selectedTexture]);
+        if (this.selectedTexture != -1)
+            this.earthTex.setTexture(this.textures[this.selectedTexture]);
     }
 
     updateTexCoords() {
@@ -105,11 +106,7 @@ class MyScene extends CGFscene {
 
         // ---- BEGIN Primitive drawing section
 
-        //This sphere does not have defined texture coordinates
-        if (this.displaySphere) {
-            this.earthTex.apply();
-            this.incompleteSphere.display();
-        }
+
 
         if (this.displayCylinder) {
             this.setDefaultAppearance();
@@ -125,12 +122,35 @@ class MyScene extends CGFscene {
             this.popMatrix();
         }
 
-        if (this.displayCube) {
-            this.pushMatrix();
-            this.earthTex.apply();
-            this.scale(20, 20, 20);
-            this.cube.display();
-            this.popMatrix();
+        if (this.selectedTexture == -1) {
+            if (this.displayCube) {
+                this.pushMatrix();
+                this.scale(50, 50, 50);
+                this.cube.display();
+                this.popMatrix();
+            }
+
+            //This sphere does not have defined texture coordinates
+            if (this.displaySphere) {
+                this.pushMatrix();
+                this.earthTex.apply();
+                this.incompleteSphere.display();
+                this.popMatrix();
+            }
+        }
+        else {
+            if (this.displaySphere) {
+                this.pushMatrix();
+                this.incompleteSphere.display();
+                this.popMatrix();
+            }
+            if (this.displayCube) {
+                this.pushMatrix();
+                this.earthTex.apply();
+                this.scale(50, 50, 50);
+                this.cube.display();
+                this.popMatrix();
+            }
         }
 
         // ---- END Primitive drawing section
@@ -201,7 +221,7 @@ class MyScene extends CGFscene {
             if (keysPressed) {
                 console.log(text);
             }
-            
+
         }
         this.vehicle.update();
     }

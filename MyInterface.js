@@ -20,7 +20,7 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
         this.gui.add(this.scene, 'displaySphere').name('Display Sphere');
         this.gui.add(this.scene, 'displayCylinder').name('Display Cylinder');
-        this.gui.add(this.scene, 'displaySkybox').name('Display Cube');
+        this.gui.add(this.scene, 'displayCube').name('Display Skybox');
         this.gui.add(this.scene, 'displayVehicle').name('Display Vehicle');
         this.gui.add(this.scene, 'speedFactor', 0.1, 3.0).name('Speed Factor');
         this.gui.add(this.scene, 'vehicleScale', 0.5, 3.0).name('Vehicle Scale Factor');
