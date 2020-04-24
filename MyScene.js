@@ -10,6 +10,8 @@ class MyScene extends CGFscene {
         super.init(application);
         this.initCameras();
         this.initLights();
+        
+        this.mySkybox = new CGFtexture(this, 'images/mySkybox.png');
 
         //Background color
         this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -31,6 +33,8 @@ class MyScene extends CGFscene {
         this.earthTex.loadTexture('images/earth.jpg');
         this.earthTex.setTextureWrap('REPEAT', 'REPEAT');
 
+        this.cubemap = new CGFtexture(this, 'images/cubemap.png');
+
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.incompleteSphere = new MySphere(this, 16, 8);
@@ -42,10 +46,14 @@ class MyScene extends CGFscene {
         this.displayAxis = true;
         this.displayCylinder = false;
         this.displaySphere = false;
-        this.displayCube = false;
+        this.displayCube = true;
         this.displayVehicle = true;
         this.speedFactor = 0.1;
         this.vehicleScale = 1;
+        this.selectedTexture = 0;  
+        this.textures = [this.mySkybox,this.cubemap];
+        this.textureIds = { 'Custom Skybox': 0, 'Cubemap': 1};
+        this.updateAppliedTexture();
     }
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
@@ -67,6 +75,14 @@ class MyScene extends CGFscene {
     update(t) {
         this.checkKeys();
         //To be done...
+    }
+
+    updateAppliedTexture() {
+        this.earthTex.setTexture(this.textures[this.selectedTexture]);
+    }
+
+    updateTexCoords() {
+        this.cube.updateTexCoords();
     }
 
     display() {
@@ -111,8 +127,8 @@ class MyScene extends CGFscene {
 
         if (this.displayCube) {
             this.pushMatrix();
-            this.setDefaultAppearance();
-            this.scale(50, 50, 50);
+            this.earthTex.apply();
+            this.scale(20, 20, 20);
             this.cube.display();
             this.popMatrix();
         }
