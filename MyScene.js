@@ -27,8 +27,8 @@ class MyScene extends CGFscene {
 
         this.earthTex = new CGFappearance(this);
         this.earthTex.setAmbient(0.7, 0.7, 0.7, 1);
-        this.earthTex.setDiffuse(0.9, 0.9, 0.9, 1);
-        this.earthTex.setSpecular(0.1, 0.1, 0.1, 1);
+        this.earthTex.setDiffuse(0.1, 0.1, 0.1, 0.1);
+        this.earthTex.setSpecular(0.1, 0.1, 0.1, 0.1);
         this.earthTex.setShininess(10.0);
         this.earthTex.setTextureWrap('REPEAT', 'REPEAT');
 
@@ -45,6 +45,12 @@ class MyScene extends CGFscene {
         this.cube = new MyUnitCube(this);
         this.vehicle = new MyVehicle(this);
         this.terrain = new MyTerrain(this);
+        this.supplies = [];
+        this.supplies.push(new MySupply(this));
+        this.supplies.push(new MySupply(this));
+        this.supplies.push(new MySupply(this));
+        this.supplies.push(new MySupply(this));
+        this.supplies.push(new MySupply(this));
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -57,6 +63,7 @@ class MyScene extends CGFscene {
         this.vehicleScale = 1;
         this.selectedTexture = -1;
         this.textures = [this.mySkybox, this.cubemap];
+        this.currentSupply = 0;
         this.textureIds = { 'Custom Skybox': 0, 'Cubemap': 1 };
         this.updateAppliedTexture();
     }
@@ -70,10 +77,10 @@ class MyScene extends CGFscene {
     }
     initCameras() {
         //FAR AWAY CAMERA
-         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(50, 100, 50), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(50, 100, 50), vec3.fromValues(0, 0, 0));
 
-         //CLOSE CAMERA
-         //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        //CLOSE CAMERA
+        //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -85,6 +92,12 @@ class MyScene extends CGFscene {
     update(t) {
         this.checkKeys();
         //To be done...
+        for (var i=0 ; i<5; i++){
+            this.supplies[i].update();
+        }
+        
+        this.vehicle.update(t);
+        
     }
 
     updateAppliedTexture() {
@@ -136,6 +149,7 @@ class MyScene extends CGFscene {
         if (this.displayCube) {
             this.pushMatrix();
             this.translate(0,25,0);
+            this.translate(0,-0.07,0);
             this.scale(50, 50, 50);
             this.cube.display();
             this.popMatrix();
@@ -154,8 +168,13 @@ class MyScene extends CGFscene {
         if (this.displayTerrain) {
             this.pushMatrix();
             this.setDefaultAppearance();
+            this.translate(0,-0.05,0);
             this.terrain.display();
             this.popMatrix();
+        }
+
+        for (var i=0 ; i<5; i++){
+            this.supplies[i].display();
         }
 
 
@@ -199,6 +218,11 @@ class MyScene extends CGFscene {
             if (this.gui.isKeyPressed("KeyR")) {
                 text += " R ";
                 this.vehicle.reset();
+                this.supplies = []
+                for(var i = 0; i<5;i++){
+                    this.supplies.push(new MySupply(this));
+                }
+                this.currentSupply = 0;
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyP")) {
@@ -222,6 +246,11 @@ class MyScene extends CGFscene {
             if (this.gui.isKeyPressed("KeyR")) {
                 text += " R ";
                 this.vehicle.reset();
+                this.supplies = []
+                for(var i = 0; i<5;i++){
+                    this.supplies.push(new MySupply(this));
+                }
+                this.currentSupply = 0;
                 keysPressed = true;
             }
             if (keysPressed) {
@@ -229,6 +258,13 @@ class MyScene extends CGFscene {
             }
 
         }
-        this.vehicle.update();
+        if (this.gui.isKeyPressed("KeyL")) {
+            text += " L ";
+            if(this.currentSupply <=4){
+                this.supplies[this.currentSupply].drop(this.vehicle.x,this.vehicle.z);
+                this.currentSupply++;
+            }
+            keysPressed = true;
+        }
     }
 }

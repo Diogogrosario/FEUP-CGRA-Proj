@@ -20,6 +20,7 @@ class MyVehicle extends CGFobject {
         this.helix = new MyHelix(this.scene)
         this.sphere = new MySphere(this.scene,16,8);
         this.leme = new MyLeme(this.scene);
+        this.flag  = new MyPlane(this.scene,20);
 
         this.mainBodyTexture = new CGFappearance(this.scene);
         this.mainBodyTexture.setAmbient(0.7,0.7,0.7,1);
@@ -36,6 +37,28 @@ class MyVehicle extends CGFobject {
         this.lemeTex.setShininess(10);
         this.lemeTex.loadTexture('images/leme.png');
         this.lemeTex.setTextureWrap('REPEAT','REPEAT');
+
+
+        this.string = new CGFappearance(this.scene);
+        this.string.setAmbient(0.7,0.7,0.7,1);
+        this.string.setDiffuse(0.9,0.9,0.9,1);
+        this.string.setDiffuse(0.2,0.2,0.2,1);
+        this.string.setShininess(10);
+        this.string.loadTexture('images/flagString.jpg');
+        this.string.setTextureWrap('REPEAT','REPEAT');
+        
+
+
+        this.texture=new CGFtexture(this.scene,'images/flag.jpg');
+
+        this.shader=new CGFshader(this.scene.gl, "shaders/flag.vert", "shaders/flag.frag");
+        this.shader.setUniformsValues({ uSampler1: 1 });
+        this.shader.setUniformsValues({ vehicleSpeed: 0.05 });
+        this.shader.setUniformsValues({time: 0});
+        this.reverseShader=new CGFshader(this.scene.gl, "shaders/reverseFlag.vert", "shaders/flag.frag");
+        this.reverseShader.setUniformsValues({ uSampler1: 1 });
+        this.reverseShader.setUniformsValues({time: 0});
+        this.reverseShader.setUniformsValues({ vehicleSpeed: 0.05 });
     }
     
     display(){
@@ -102,7 +125,51 @@ class MyVehicle extends CGFobject {
         this.leme.display()
         this.scene.popMatrix();
         
+        
+        
+        //FLAG
+        this.scene.setActiveShader(this.shader);
+        this.texture.bind(1);
 
+        this.scene.pushMatrix();
+        this.scene.translate(0.3,0,-4);
+        this.scene.rotate(Math.PI/2,0,1,0);
+        this.scene.scale(1.7,0.9,1);
+        this.flag.display();
+        this.scene.popMatrix();
+
+        this.scene.setActiveShader(this.reverseShader);
+
+        this.scene.pushMatrix();
+        this.scene.translate(0.3,0,-4);
+        this.scene.rotate(3*Math.PI/2,0,1,0);
+        this.scene.scale(1.7,0.9,1);
+        this.flag.display();
+        this.scene.popMatrix();
+
+        this.scene.setActiveShader(this.scene.defaultShader);
+
+        this.string.apply();
+
+        //FIO CIMA
+        this.scene.pushMatrix();
+        this.scene.translate(0.3,0.43,-2.15);
+        this.scene.rotate(Math.PI/2,0,1,0);
+        this.scene.scale(2,0.05,1);
+        this.flag.display();
+        this.scene.rotate(Math.PI,1,0,0);
+        this.flag.display();
+        this.scene.popMatrix();
+
+        //FIO BAIXO
+        this.scene.pushMatrix();
+        this.scene.translate(0.3,-0.43,-2.15);
+        this.scene.rotate(Math.PI/2,0,1,0);
+        this.scene.scale(2,0.05,1);
+        this.flag.display();
+        this.scene.rotate(Math.PI,1,0,0);
+        this.flag.display();
+        this.scene.popMatrix();
 
 
         this.scene.popMatrix();
@@ -117,6 +184,7 @@ class MyVehicle extends CGFobject {
         this.z = 0; 
         this.autoPilot = false;
         this.helix.update(0);
+        this.flagUpdate(0);
     }
 
     turn(value){
@@ -138,7 +206,7 @@ class MyVehicle extends CGFobject {
             this.lemeRotate = 0;
     }
 
-    update(){
+    update(t){
         if(this.autoPilot == false){
             this.x += this.velocity * Math.sin(this.angle);
             this.z += this.velocity * Math.cos(this.angle);
@@ -150,6 +218,16 @@ class MyVehicle extends CGFobject {
 
         }
         this.helix.update(this.velocity,0); 
+        this.flagUpdate(t/1000%1000);
+    }
+
+    flagUpdate(t){
+        this.shader.setUniformsValues({ vehicleSpeed: this.velocity+0.05 });
+        this.shader.setUniformsValues({time: t});
+
+        this.reverseShader.setUniformsValues({ vehicleSpeed: this.velocity+0.05 });
+        this.reverseShader.setUniformsValues({time: t});
+
     }
 
     
