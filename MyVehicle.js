@@ -20,6 +20,22 @@ class MyVehicle extends CGFobject {
         this.helix = new MyHelix(this.scene)
         this.sphere = new MySphere(this.scene,16,8);
         this.leme = new MyLeme(this.scene);
+
+        this.mainBodyTexture = new CGFappearance(this.scene);
+        this.mainBodyTexture.setAmbient(0.7,0.7,0.7,1);
+        this.mainBodyTexture.setDiffuse(0.9,0.9,0.9,1);
+        this.mainBodyTexture.setDiffuse(0.2,0.2,0.2,1);
+        this.mainBodyTexture.setShininess(10);
+        this.mainBodyTexture.loadTexture('images/burger-king.png');
+        this.mainBodyTexture.setTextureWrap('REPEAT','REPEAT');
+
+        this.lemeTex = new CGFappearance(this.scene);
+        this.lemeTex.setAmbient(0.7,0.7,0.7,1);
+        this.lemeTex.setDiffuse(0.9,0.9,0.9,1);
+        this.lemeTex.setDiffuse(0.2,0.2,0.2,1);
+        this.lemeTex.setShininess(10);
+        this.lemeTex.loadTexture('images/leme.png');
+        this.lemeTex.setTextureWrap('REPEAT','REPEAT');
     }
     
     display(){
@@ -31,10 +47,12 @@ class MyVehicle extends CGFobject {
         //Corpo do dirigível
         
         this.scene.pushMatrix();
+        this.mainBodyTexture.apply();
         this.scene.scale(1,1,2);
         this.sphere.display();
         this.scene.popMatrix();
 
+        this.lemeTex.apply();
         
         //Hélice
         this.scene.pushMatrix(); /// START HELICE TRANSFORM

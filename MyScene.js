@@ -26,14 +26,17 @@ class MyScene extends CGFscene {
         this.enableTextures(true);
 
         this.earthTex = new CGFappearance(this);
-        this.earthTex.setAmbient(0.1, 0.1, 0.1, 1);
+        this.earthTex.setAmbient(0.7, 0.7, 0.7, 1);
         this.earthTex.setDiffuse(0.9, 0.9, 0.9, 1);
         this.earthTex.setSpecular(0.1, 0.1, 0.1, 1);
         this.earthTex.setShininess(10.0);
-        this.earthTex.loadTexture('images/earth.jpg');
         this.earthTex.setTextureWrap('REPEAT', 'REPEAT');
 
         this.cubemap = new CGFtexture(this, 'images/cubemap.png');
+        this.earthTexture = new CGFtexture(this, 'images/earth.jpg');
+
+        this.earthTex.setTexture(this.earthTexture);
+
 
         //Initialize scene objects
         this.axis = new CGFaxis(this);
@@ -41,12 +44,14 @@ class MyScene extends CGFscene {
         this.cylinder = new MyCylinder(this, 100);
         this.cube = new MyUnitCube(this);
         this.vehicle = new MyVehicle(this);
+        this.terrain = new MyTerrain(this);
 
         //Objects connected to MyInterface
         this.displayAxis = true;
         this.displayCylinder = false;
         this.displaySphere = false;
         this.displayCube = false;
+        this.displayTerrain = true;
         this.displayVehicle = true;
         this.speedFactor = 0.1;
         this.vehicleScale = 1;
@@ -58,12 +63,17 @@ class MyScene extends CGFscene {
     initLights() {
         this.lights[0].setPosition(15, 2, 5, 1);
         this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-        this.lights[0].setAmbient(0.25, 0.25, 0.25, 1.0);
+        this.lights[0].setAmbient(0.5, 0.5, 0.5, 1.0);
         this.lights[0].enable();
         this.lights[0].update();
+        this.setGlobalAmbientLight(0.8, 0.8, 0.8, 1.0);
     }
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        //FAR AWAY CAMERA
+         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(50, 100, 50), vec3.fromValues(0, 0, 0));
+
+         //CLOSE CAMERA
+         //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     setDefaultAppearance() {
         this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -107,51 +117,47 @@ class MyScene extends CGFscene {
         // ---- BEGIN Primitive drawing section
 
 
+        this.earthTex.apply();
 
         if (this.displayCylinder) {
             this.setDefaultAppearance();
             this.cylinder.display();
         }
 
+        //This sphere does not have defined texture coordinates
+        if (this.displaySphere) {
+            this.pushMatrix();
+            this.incompleteSphere.display();
+            this.popMatrix();
+        }
+
+        
+
+        if (this.displayCube) {
+            this.pushMatrix();
+            this.translate(0,25,0);
+            this.scale(50, 50, 50);
+            this.cube.display();
+            this.popMatrix();
+        }
+
         if (this.displayVehicle) {
             this.pushMatrix();
             this.scale(this.vehicleScale, this.vehicleScale, this.vehicleScale);
-            //this.translate(0,10,0);
+            this.translate(0,10,0);
             this.setDefaultAppearance();
             this.vehicle.display();
             this.popMatrix();
         }
 
-        if (this.selectedTexture == -1) {
-            if (this.displayCube) {
-                this.pushMatrix();
-                this.scale(50, 50, 50);
-                this.cube.display();
-                this.popMatrix();
-            }
 
-            //This sphere does not have defined texture coordinates
-            if (this.displaySphere) {
-                this.pushMatrix();
-                this.earthTex.apply();
-                this.incompleteSphere.display();
-                this.popMatrix();
-            }
+        if (this.displayTerrain) {
+            this.pushMatrix();
+            this.setDefaultAppearance();
+            this.terrain.display();
+            this.popMatrix();
         }
-        else {
-            if (this.displaySphere) {
-                this.pushMatrix();
-                this.incompleteSphere.display();
-                this.popMatrix();
-            }
-            if (this.displayCube) {
-                this.pushMatrix();
-                this.earthTex.apply();
-                this.scale(50, 50, 50);
-                this.cube.display();
-                this.popMatrix();
-            }
-        }
+
 
         // ---- END Primitive drawing section
     }

@@ -33,7 +33,14 @@ class MyTriangle extends CGFobject {
 		for(var i=0;i<3;i++) // n vertices
         {
             this.normals.push(0,0,-1);
-        }
+		}
+		
+		this.texCoords = [0,0,
+						0,1,
+						1,1,
+						0,0,
+						0,1,
+						1,1]
 
 		//The defined indices (and corresponding vertices)
 		//will be read in groups of three to draw triangles
