@@ -215,6 +215,7 @@ class MyVehicle extends CGFobject {
             this.turn(Math.PI/50);
             this.x +=  Math.PI/10 * Math.sin(this.angle);
             this.z +=  Math.PI/10 * Math.cos(this.angle);
+            this.lemeRotate = -Math.PI/10;
 
         }
         this.helix.update(this.velocity,0); 

@@ -239,6 +239,7 @@ class MyScene extends CGFscene {
             if (this.gui.isKeyPressed("KeyP")) {
                 text += " P ";
                 this.vehicle.autoPilot = false;
+                this.vehicle.lemeRotate = 0;
                 keysPressed = true;
             }
             if (this.gui.isKeyPressed("KeyR")) {
