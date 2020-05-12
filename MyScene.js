@@ -45,6 +45,7 @@ class MyScene extends CGFscene {
         this.cube = new MyUnitCube(this);
         this.vehicle = new MyVehicle(this);
         this.terrain = new MyTerrain(this);
+        this.billboard = new MyBillboard(this);
         this.supplies = [];
         this.supplies.push(new MySupply(this));
         this.supplies.push(new MySupply(this));
@@ -77,7 +78,7 @@ class MyScene extends CGFscene {
     }
     initCameras() {
         //FAR AWAY CAMERA
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(50, 100, 50), vec3.fromValues(0, 0, 0));
+        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(50, 50, 50), vec3.fromValues(0, 0, 0));
 
         //CLOSE CAMERA
         //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
@@ -171,10 +172,17 @@ class MyScene extends CGFscene {
             this.popMatrix();
         }
 
+        this.pushMatrix();
         for (var i=0 ; i<5; i++){
             this.supplies[i].display();
         }
-
+        this.popMatrix();
+        
+        this.pushMatrix();
+        this.translate(-2,6.5,17);
+        this.rotate(Math.PI/4,0,1,0);
+        this.billboard.display();
+        this.popMatrix();
 
         // ---- END Primitive drawing section
     }
@@ -216,7 +224,8 @@ class MyScene extends CGFscene {
             if (this.gui.isKeyPressed("KeyR")) {
                 text += " R ";
                 this.vehicle.reset();
-                this.supplies = []
+                this.supplies = [];
+                this.billboard.reset();
                 for(var i = 0; i<5;i++){
                     this.supplies.push(new MySupply(this));
                 }
@@ -262,6 +271,8 @@ class MyScene extends CGFscene {
             if(this.currentSupply <=4){
                 this.supplies[this.currentSupply].drop(this.vehicle.x,this.vehicle.z);
                 this.currentSupply++;
+                this.billboard.update(this.currentSupply);
+                
             }
             keysPressed = true;
         }
