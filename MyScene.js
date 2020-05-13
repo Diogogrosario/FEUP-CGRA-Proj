@@ -52,6 +52,8 @@ class MyScene extends CGFscene {
         this.supplies.push(new MySupply(this));
         this.supplies.push(new MySupply(this));
         this.supplies.push(new MySupply(this));
+        this.oldUpdate = -10;
+        this.nUpdates = 0;
 
         //Objects connected to MyInterface
         this.displayAxis = true;
@@ -91,6 +93,7 @@ class MyScene extends CGFscene {
     }
     // called periodically (as per setUpdatePeriod() in init())
     update(t) {
+        this.nUpdates++;
         this.checkKeys();
         //To be done...
         for (var i=0 ; i<5; i++){
@@ -268,11 +271,11 @@ class MyScene extends CGFscene {
         }
         if (this.gui.isKeyPressed("KeyL")) {
             text += " L ";
-            if(this.currentSupply <=4){
+            if(this.currentSupply <=4 && (this.oldUpdate+10 < this.nUpdates)){
                 this.supplies[this.currentSupply].drop(this.vehicle.x,this.vehicle.z);
                 this.currentSupply++;
                 this.billboard.update(this.currentSupply);
-                
+                this.oldUpdate = this.nUpdates;
             }
             keysPressed = true;
         }
