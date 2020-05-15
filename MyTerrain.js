@@ -8,7 +8,7 @@ class MyTerrain extends CGFobject {
         this.plane = new MyPlane(this.scene,20);
         this.shader=new CGFshader(this.scene.gl, "shaders/terrain.vert", "shaders/terrain.frag");
         this.terrainTex=new CGFtexture(this.scene,'images/terrain.jpg');
-        this.heightTex=new CGFtexture(this.scene,'images/heightmap.jpg');
+        this.heightTex=new CGFtexture(this.scene,'images/heightmap2.png');
         this.shader.setUniformsValues({ uSampler1: 1 });
         this.shader.setUniformsValues({ uSampler2: 2 });
     

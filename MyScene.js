@@ -56,7 +56,7 @@ class MyScene extends CGFscene {
         this.nUpdates = 0;
 
         //Objects connected to MyInterface
-        this.displayAxis = true;
+        this.displayAxis = false;
         this.displayCylinder = false;
         this.displaySphere = false;
         this.displayCube = false;
@@ -262,6 +262,7 @@ class MyScene extends CGFscene {
                     this.supplies.push(new MySupply(this));
                 }
                 this.currentSupply = 0;
+                this.billboard.reset();
                 keysPressed = true;
             }
             if (keysPressed) {
