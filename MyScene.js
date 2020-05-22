@@ -97,7 +97,7 @@ class MyScene extends CGFscene {
         this.checkKeys();
         //To be done...
         for (var i=0 ; i<5; i++){
-            this.supplies[i].update();
+            this.supplies[i].update(t);
         }
         
         this.vehicle.update(t);
@@ -159,8 +159,9 @@ class MyScene extends CGFscene {
 
         if (this.displayVehicle) {
             this.pushMatrix();
-            this.scale(this.vehicleScale, this.vehicleScale, this.vehicleScale);
+            this.translate(this.vehicle.x,this.vehicle.y,this.vehicle.z);
             this.translate(0,10,0);
+            this.scale(this.vehicleScale, this.vehicleScale, this.vehicleScale);
             this.setDefaultAppearance();
             this.vehicle.display();
             this.popMatrix();

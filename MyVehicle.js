@@ -63,8 +63,7 @@ class MyVehicle extends CGFobject {
     
     display(){
 
-        this.scene.pushMatrix()
-        this.scene.translate(this.x,this.y,this.z);
+        this.scene.pushMatrix();
         this.scene.rotate(this.angle,0,1,0);
 
         //Corpo do dirigível
@@ -207,14 +206,23 @@ class MyVehicle extends CGFobject {
     }
 
     update(t){
+        if(this.time == 0){
+            this.time = t/1000%1000;
+        }
+
+        this.timePassed = (t/1000%1000) - this.time;
+        this.time = t/1000%1000;
+
+        
+        
         if(this.autoPilot == false){
             this.x += this.velocity * Math.sin(this.angle);
             this.z += this.velocity * Math.cos(this.angle);
         }
         else{
-            this.turn(Math.PI/50);
-            this.x +=  Math.PI/10 * Math.sin(this.angle);
-            this.z +=  Math.PI/10 * Math.cos(this.angle);
+            this.turn(2.0*Math.PI/5.0 * this.timePassed);
+            this.x +=  10*Math.PI/5.0 * this.timePassed * Math.sin(this.angle);
+            this.z +=  10*Math.PI/5.0 * this.timePassed * Math.cos(this.angle);
             this.lemeRotate = -Math.PI/10;
 
         }

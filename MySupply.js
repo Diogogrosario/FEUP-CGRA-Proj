@@ -43,12 +43,20 @@ class MySupply extends CGFobject {
 
     }
 
-    update(){
+    update(t){
+        if(this.time == 0){
+            this.time = t/1000%1000;
+        }
+
+        this.timePassed = (t/1000%1000) - this.time;
+        this.time = t/1000%1000;
+
+        
+        if(this.state == SupplyStates.FALLING){
+            this.y -= 8.1/3.0 * this.timePassed;
+        }
         if(this.y <= 0.5){
             this.land();
-        }
-        if(this.state == SupplyStates.FALLING){
-            this.y -= 8.1/60;
         }
     }
 
